@@ -55,17 +55,23 @@ if(scheme_name === undefined ||
   }
 */
 const validateStep = (req, res, next) => {
-const { instructions, step_number } = req.body
-
-if(instructions === undefined || typeof instructions !== 'string' || !instructions.trim() ||
-step_number < 1 || typeof instructions !== 'number')
-{
-  next({status: 400, message: "invalid scheme_name"})
-}else{
-  next()
-}
-}
-
+  const { instructions, step_number } = req.body;
+  try {
+    if (
+      typeof instructions !== "string" ||
+      !instructions ||
+      !instructions.trim()
+    ) {
+      return res.status(400).json({ message: "invalid step" });
+    }
+    if (isNaN(step_number) || step_number < 1) {
+      return res.status(400).json({ message: "invalid step" });
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   checkSchemeId,
   validateScheme,
