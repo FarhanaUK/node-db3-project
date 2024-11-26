@@ -14,8 +14,10 @@ try{
 const existing = await db('schemes').where('scheme_id', req.params.scheme_id).first()
 if(!existing){
   next({
-    status: 400, message: `scheme with scheme_id ${req.params.scheme_id} not found`
+    status: 404, message: `scheme with scheme_id ${req.params.scheme_id} not found`
   })
+}else {
+  next()
 }
 }
 catch(err){
@@ -32,7 +34,10 @@ catch(err){
   }
 */
 const validateScheme = (req, res, next) => {
-if(req.body.scheme_name === undefined || typeof req.body.scheme_name !== 'string' || !scheme.name.trim())
+  const {scheme_name} = req.body
+if(scheme_name === undefined ||
+   typeof scheme_name !== 'string' ||
+    !scheme_name.trim())
 {
   next({status: 400, message: "invalid scheme_name"})
 }else{
