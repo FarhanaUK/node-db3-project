@@ -32,7 +32,12 @@ catch(err){
   }
 */
 const validateScheme = (req, res, next) => {
-
+if(req.body.scheme_name === undefined || typeof req.body.scheme_name !== 'string' || !scheme.name.trim())
+{
+  next({status: 400, message: "invalid scheme_name"})
+}else{
+  next()
+}
 }
 
 /*
@@ -45,7 +50,15 @@ const validateScheme = (req, res, next) => {
   }
 */
 const validateStep = (req, res, next) => {
+const { instructions, step_number } = req.body
 
+if(instructions === undefined || typeof instructions !== 'string' || !instructions.trim() ||
+step_number < 1 || typeof instructions !== 'number')
+{
+  next({status: 400, message: "invalid scheme_name"})
+}else{
+  next()
+}
 }
 
 module.exports = {
